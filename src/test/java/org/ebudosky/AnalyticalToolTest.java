@@ -51,6 +51,18 @@ class AnalyticalToolTest {
     }
 
     @Test
+    @DisplayName("Question parent matches but child does not")
+    void testQuestionChildDoesNotMatch() {
+        assertEquals("-", tool.executeQuery("D * 10.2 P 01.12.2012"));
+    }
+
+    @Test
+    @DisplayName("Question parent and child match but grandchild does not")
+    void testQuestionGrandChildDoesNotMatch() {
+        assertEquals("-", tool.executeQuery("D * 8.15.2 P 14.10.2012"));
+    }
+
+    @Test
     @DisplayName("Exact deepest possible match")
     void testExactDeepestPossibleMatch() {
         // The exact same record is present
@@ -60,14 +72,19 @@ class AnalyticalToolTest {
     @Test
     @DisplayName("Full mismatch logic")
     void testAbsoluteMismatch() {
-        // Service matches (1), Answer Type matches (P), but Question type (9) exists nowhere
-        assertEquals("-", tool.executeQuery("D 1 9 P 01.01.2012-31.12.2012"));
+        assertEquals("-", tool.executeQuery("D 2 9 P 01.01.2012-31.12.2012"));
     }
 
     @Test
     @DisplayName("Service parent matches child")
     void testServiceVariationMatching() {
         assertEquals("88", tool.executeQuery("D 1 * P 14.10.2012-01.12.2012"));
+    }
+
+    @Test
+    @DisplayName("Service parent matches but child does not")
+    void testServiceVariationDoesNotMatch() {
+        assertEquals("-", tool.executeQuery("D 1.2 * P 01.01.2012"));
     }
 
     @Test
@@ -81,5 +98,17 @@ class AnalyticalToolTest {
     @DisplayName("Query deeper than Record")
     void testDeepQueryOnShallowRecord() {
         assertEquals("-", tool.executeQuery("D 1.1 10.1 P 01.12.2012"));
+    }
+
+    @Test
+    @DisplayName("DateTo is smaller than dateForm")
+    void testDateToIsSmallerThanDateFrom() {
+        assertEquals("-", tool.executeQuery("D * * P 01.12.2012-01.01.2011"));
+    }
+
+    @Test
+    @DisplayName("DateTo is too small")
+    void testDateToIsSmall() {
+        assertEquals("-", tool.executeQuery("D * * P 01.01.2012-01.01.2011"));
     }
 }
