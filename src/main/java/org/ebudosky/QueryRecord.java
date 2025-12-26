@@ -1,0 +1,11 @@
+package org.ebudosky;
+
+public record QueryRecord(byte serviceTypeId,
+                          byte serviceVariationId,
+                          byte questionTypeId,
+                          byte questionCategoryId,
+                          byte questionSubcategoryId,
+                          boolean firstAnswer,
+                          int dateFrom,
+                          int dateTo) {
+}

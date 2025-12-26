@@ -1,25 +1,36 @@
 package org.ebudosky;
 
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
     public static void main(String[] args) {
         AnalyticalTool engine = new AnalyticalTool();
 
-        Scanner sc = new Scanner(System.in);
-        int S = sc.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        for (int i = 0; i < S; i++) {
-            String line = sc.nextLine();
-            if (line.startsWith("C")) {
-                engine.addRecord(line);
+        try {
+            String firstLine = br.readLine();
+            if (firstLine == null) return;
+
+            int S = Integer.parseInt(firstLine.trim());
+
+            for (int i = 0; i < S; i++) {
+                String line = br.readLine();
+                if (line.startsWith("C")) {
+                    engine.addRecord(line);
+                }
+                else if (line.startsWith("D")) {
+                    System.out.println(engine.executeQuery(line));
+                }
             }
-            else if (line.startsWith("D")) {
-                engine.executeQuery(line);
-            }
-            else{
-                throw new IllegalArgumentException("Unknown argument: " + line.charAt(0));
-            }
+        }
+        catch (IOException e){
+            System.err.println("An unexpected io exception was encountered: " + e.getMessage());
+        }
+        catch (NumberFormatException e){
+            System.err.println("An unexpected number format exception was encountered: " + e.getMessage());
         }
     }
 }
