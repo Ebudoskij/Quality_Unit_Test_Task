@@ -7,7 +7,7 @@ public class Main {
         AnalyticalTool engine = new AnalyticalTool();
 
         Scanner sc = new Scanner(System.in);
-        int S = Integer.parseInt(sc.nextLine());
+        int S = sc.nextInt();
 
         for (int i = 0; i < S; i++) {
             String line = sc.nextLine();

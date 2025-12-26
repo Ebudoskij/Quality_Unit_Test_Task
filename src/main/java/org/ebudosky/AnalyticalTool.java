@@ -2,9 +2,6 @@ package org.ebudosky;
 
 import org.ebudosky.Exception.NotEnoughDataException;
 
-import javax.swing.text.DateFormatter;
-import java.text.DateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,11 +82,13 @@ public class AnalyticalTool {
                                           int dateFrom,
                                           int dateTo) {
         return waitingRecords.stream()
-                .filter(r -> serviceTypeId == -1 || r.getServiceTypeId() == serviceTypeId)
-                .filter(r -> serviceVariationId == -1 || r.getServiceVariationId() == serviceVariationId)
-                .filter(r -> questionTypeId == -1 || r.getQuestionTypeId() == questionTypeId)
-                .filter(r -> questionCategoryId == -1 || r.getQuestionCategoryId() == questionCategoryId)
-                .filter(r -> questionSubcategoryId == -1 || r.getQuestionSubcategoryId() == questionSubcategoryId)
+                .filter(r -> serviceTypeId == -1 ||
+                        (r.getServiceTypeId() == serviceTypeId &&
+                                (serviceVariationId == -1 || r.getServiceVariationId() == serviceVariationId)))
+                .filter(r -> questionTypeId == -1 ||
+                        (r.getQuestionTypeId() == questionTypeId &&
+                                (questionCategoryId == -1 || (r.getQuestionCategoryId() == questionCategoryId &&
+                                        (questionSubcategoryId == -1 || r.getQuestionSubcategoryId() == questionSubcategoryId)))))
                 .filter(r -> r.isFirstAnswer() == firstAnswer)
                 .filter(r -> r.getDate() >= dateFrom && (dateTo == -1 || r.getDate() <= dateTo))
                 .mapToInt(SupportRecord::getWaitingMinutes)
